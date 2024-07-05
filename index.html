@@ -1,13 +1,61 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Weather</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css">
+</head>
+
+<body class="mb-4">
+  <div class="block has-text-centered m-4 ">
+    <button id="add-forecast-button" class="button is-primary mb-4" onclick="openModal()">Add forecast</button>
+  <h1 class="title is-1">Saved Weather Forecasts</h1>
+  
+
+
+  <!-- Modal -->
+  <div class="modal" id="forecast-modal">
+    <div class="modal-background" onclick="closeModal()"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h2 class="title">Add Forecast</h2>
+        <div class="field">
+          <label class="label">City Name</label>
+          <div class="control">
+            <input id="city-input" class="input" type="text" placeholder="Enter city name">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">ZIP Code</label>
+          <div class="control">
+            <input id="zip-input" class="input" type="text" placeholder="Enter ZIP code">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Coordinates</label>
+          <div class="control">
+            <input id="lat-input" class="input" type="text" placeholder="Enter latitude">
+          </div>
+          <div class="control">
+            <input id="lon-input" class="input" type="text" placeholder="Enter longitude">
+          </div>
+        </div>
+        <button id="search-button" class="button is-link" onclick="searchForecast()">Search</button>
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close" onclick="closeModal()"></button>
+  </div>
+  <b><b>
+  <div class="block has-text-centered" id="forecast-container"></div>
+  <div>
+
+    <div class="block has-text-centered m-4">
+      <button id="prev-page-button" class="button is-primary mr-2" onclick="prevPage()">Previous Page</button>
+      <button id="next-page-button" class="button is-primary" onclick="nextPage()">Next Page</button>
+    </div>
+
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
 </html>
