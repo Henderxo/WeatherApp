@@ -13,32 +13,48 @@ import axios from 'axios';
 const forecastsPerPage = 10;
 let currentPage = 1;
 let forecastsData: WeatherData[] = [];
+let currentModel: string;
+let currentForecastsData: WeatherData[] = [];
 
-function openModal() {
-  const modal = document.getElementById('forecast-modal') as HTMLDivElement;
-  modal.classList.add('is-active');
-}
-
-function closeModal() {
-  const modal = document.getElementById('forecast-modal') as HTMLDivElement;
-  
-  modal.classList.remove('is-active');
-}
 
 function displayError(message: string){
   const modal = document.getElementById('error-modal') as HTMLDivElement;
   const error = document.getElementById('error-modal-message') as HTMLParagraphElement;
   error.textContent = message;
   modal.classList.add('is-active');
+  currentModel = "error-modal";
 }
 
-function closeError(){
-  const modal = document.getElementById('error-modal') as HTMLDivElement;
+function open(modelName: string){
+  const modal = document.getElementById(modelName) as HTMLDivElement;
+  modal.classList.add('is-active');
+  currentModel = modelName;
+}
+
+function openClose(modelNameToOpen: string, modelNameToClose: string){
+  const modalOpen = document.getElementById(modelNameToOpen) as HTMLDivElement;
+  const modalClose = document.getElementById(modelNameToClose) as HTMLDivElement;
+  modalClose.classList.remove('is-active');
+  modalOpen.classList.add('is-active');
+  currentModel = modelNameToOpen;
+}
+
+function close(modelName: string){
+  const modal = document.getElementById(modelName) as HTMLDivElement;
   modal.classList.remove('is-active');
 }
 
+function displaySuccess(message: string){
+  const modal = document.getElementById('success-modal') as HTMLDivElement;
+  const error = document.getElementById('success-modal-message') as HTMLParagraphElement;
+  error.textContent = message;
+  modal.classList.add('is-active');
+  currentModel = "success-modal";
+}
+
+
 async function searchForecast() {
-  closeModal();
+  close(currentModel);
   const cityInput = document.getElementById('city-input') as HTMLInputElement;
   const zipInput = document.getElementById('zip-input') as HTMLInputElement;
   const latInput = document.getElementById('lat-input') as HTMLInputElement;
@@ -70,9 +86,14 @@ async function searchForecast() {
   try {
     const response = await axios.get(url);
     const data = response.data;
+    if (forecastsData.some(dat => dat.name.toLowerCase() === data.name.toLowerCase())) 
+    {
+      displayError("Forecast for " + data.name + " already exists.");
+      return;
+    }
     saveForecast(data);
-    closeModal();
     displayForecasts();
+    displaySuccess("Forecast was successfully added");
   } catch (error) {
     displayError('Error fetching the weather data, the ' + query + " you entered must not exist");
     console.error('Error fetching the weather data:', error);
@@ -118,7 +139,7 @@ function displayForecasts(forecasts?: WeatherData[]) {
 
   forecastContainer.innerHTML = '';
 
-  const dataToDisplay = forecasts ?? forecastsData;
+  const dataToDisplay = forecasts ?? currentForecastsData;
   const startIndex = (currentPage - 1) * forecastsPerPage;
   const endIndex = startIndex + forecastsPerPage;
   const currentForecasts = dataToDisplay.slice(startIndex, endIndex);
@@ -212,7 +233,7 @@ function displayForecasts(forecasts?: WeatherData[]) {
     forecastDiv.appendChild(removeButton);
     forecastContainer.appendChild(forecastDiv);
   });
-  updatePageButtons();
+  updatePageButtons(currentForecastsData);
 }
 
 function nextPage(){
@@ -238,8 +259,8 @@ function prevPage(){
   }
 }
 
-function updatePageButtons() {
-  const totalPages = Math.ceil(forecastsData.length / forecastsPerPage);
+function updatePageButtons(data: any[] = forecastsData) {
+  const totalPages = Math.ceil(data.length / forecastsPerPage);
   const prevPageButton = document.getElementById('prev-page-button') as HTMLButtonElement;
   const nextPageButton = document.getElementById('next-page-button') as HTMLButtonElement;
 
@@ -262,8 +283,10 @@ function updatePageButtons() {
 
 function removeForecast(forecastData: WeatherData) {
   forecastsData = forecastsData.filter(data => data.name !== forecastData.name);
+  currentForecastsData = currentForecastsData.filter(data => data.name !== forecastData.name);
   saveForecastsToLocalStorage();
   displayForecasts();
+  displaySuccess("Forecast was successfully removed");
 }
 
 function saveForecastsToLocalStorage() {
@@ -277,10 +300,13 @@ function saveForecastsToLocalStorage() {
 
 function saveForecast(data: WeatherData) {
   const existingIndex = forecastsData.findIndex(forecast => forecast.name === data.name);
+  const curretnIndex = currentForecastsData.findIndex(forecast => forecast.name === data.name);
   if (existingIndex !== -1) {
     forecastsData[existingIndex] = data;
+    currentForecastsData[curretnIndex] = data;
   } else {
     forecastsData.push(data);
+    currentForecastsData.push(data);
   }
   localStorage.setItem('forecasts', JSON.stringify(forecastsData));
   displayForecasts();
@@ -289,26 +315,39 @@ function saveForecast(data: WeatherData) {
 function loadSavedForecasts() {
   let forecasts = JSON.parse(localStorage.getItem('forecasts') || '[]');
   forecastsData = forecasts;
+  currentForecastsData = forecasts;
   displayForecasts();
 }
 
 function searchForecastByName() {
+  currentPage = 1;
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
   const query = searchInput.value.trim().toLowerCase();
   const filteredForecasts = forecastsData.filter(forecast =>
     forecast.name.toLowerCase().includes(query)
   );
+  currentForecastsData = filteredForecasts;
   displayForecasts(filteredForecasts);
+  updatePageButtons(filteredForecasts);
   if (filteredForecasts.length == 0){
     displayError("No forecasts that matched where found");
   }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => loadSavedForecasts());
-document.getElementById('add-forecast-button')?.addEventListener('click', () => openModal());
-document.getElementById('search-button')?.addEventListener('click', () => searchForecast());
+document.getElementById('add-forecast-button')?.addEventListener('click', () => open("forecast-modal"));
+document.getElementById('close')?.addEventListener('click', () => close(currentModel));
+document.getElementById('close-city')?.addEventListener('click', () => close(currentModel));
+document.getElementById('close-zip')?.addEventListener('click', () => close(currentModel));
+document.getElementById('close-lat')?.addEventListener('click', () => close(currentModel));
+document.getElementById('city-field')?.addEventListener('click', () => openClose("forecast-modal-city", currentModel));
+document.getElementById('zip-field')?.addEventListener('click', () => openClose("forecast-modal-zip", currentModel));
+document.getElementById('lat-field')?.addEventListener('click', () => openClose("forecast-modal-lat", currentModel));
+document.getElementById('search-button-city')?.addEventListener('click', () => searchForecast());
+document.getElementById('search-button-zip')?.addEventListener('click', () => searchForecast());
+document.getElementById('search-button-lat')?.addEventListener('click', () => searchForecast());
 document.getElementById('prev-page-button')?.addEventListener('click', () => prevPage());
 document.getElementById('next-page-button')?.addEventListener('click', () => nextPage());
-document.getElementById('error-modal-close')?.addEventListener('click', () => closeError());
+document.getElementById('error-modal-close')?.addEventListener('click', () => close(currentModel));
+document.getElementById('success-modal-close')?.addEventListener('click', () => close(currentModel));
 document.getElementById('search-forecast-button')?.addEventListener('click', () => searchForecastByName());

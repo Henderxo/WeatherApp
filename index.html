@@ -8,8 +8,14 @@
 
 <body class="mb-4">
   <div class="block has-text-centered m-4 ">
-    <h1 class="title is-1">Wather App</h1>
-    <button id="add-forecast-button" class="button is-primary mb-4">Add forecast</button>
+  <div class="columns">
+    <div class="column  is-half is-offset-one-quarter">
+      <h1 class="title is-1">Wather App</h1>
+    </div>
+    <div class="column">
+      <button id="add-forecast-button" class="button is-primary">Add forecast</button>
+    </div>
+  </div>
 
 
     <div class="columns">
@@ -22,12 +28,24 @@
             <input id="search-input" class="input" type="text" placeholder="Search forecasts by name">
           </div>
           <div class="control">
-            <button id="search-forecast-button" class="button is-link">Search</button>
+            <button id="search-forecast-button" class="button is-primary">Search</button>
           </div>
         </div>
       </div>
     </div>
 
+  <!-- Success Modal -->
+  <div class="modal" id="success-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h2 class="title">Success</h2>
+        <p class="mb-4 is-primary" id="success-modal-message"></p>
+        <button class="button is-success" id="success-modal-close">Close</button>
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
 
 
   <!-- Error Modal -->
@@ -43,8 +61,8 @@
     <button class="modal-close is-large" aria-label="close"></button>
   </div>
 
-  <!-- Modal -->
-  <div class="modal" id="forecast-modal">
+
+  <div class="modal" id="forecast-modal-city">
     <div class="modal-background"></div>
     <div class="modal-content">
       <div class="box">
@@ -55,12 +73,34 @@
             <input id="city-input" class="input" type="text" placeholder="Enter city name">
           </div>
         </div>
+      </div>
+      <button id="search-button-city" class="button is-link">Search</button>
+    </div>
+    <button id="close-city" class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <div class="modal" id="forecast-modal-zip">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h2 class="title">Add Forecast</h2>
         <div class="field">
           <label class="label">ZIP Code</label>
           <div class="control">
             <input id="zip-input" class="input" type="text" placeholder="Enter ZIP code">
           </div>
         </div>
+      </div>
+      <button id="search-button-zip" class="button is-link">Search</button>
+    </div>
+    <button id="close-zip" class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <div class="modal" id="forecast-modal-lat">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h2 class="title">Add Forecast</h2>
         <div class="field">
           <label class="label">Coordinates</label>
           <div class="control">
@@ -70,10 +110,23 @@
             <input id="lon-input" class="input" type="text" placeholder="Enter longitude">
           </div>
         </div>
-        <button id="search-button" class="button is-link">Search</button>
+      </div>
+      <button id="search-button-lat" class="button is-link">Search</button>
+    </div>
+    <button id="close-lat" class="modal-close is-large" aria-label="close"></button>
+  </div>
+
+  <div class="modal" id="forecast-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h2 class="title">Add Forecast</h2>
+        <button id="city-field" class="button is-primary mr-2">City</button>
+        <button id="zip-field" class="button is-primary mr-2">ZIP</button>
+        <button id="lat-field" class="button is-primary mr-2">Lat, Lan</button>
       </div>
     </div>
-    <button class="modal-close is-large" aria-label="close"></button>
+    <button id="close" class="modal-close is-large" aria-label="close"></button>
   </div>
   <b><b>
   <div class="block has-text-centered" id="forecast-container"></div>
@@ -83,7 +136,6 @@
       <button id="prev-page-button" class="button is-primary mr-2">Previous Page</button>
       <button id="next-page-button" class="button is-primary">Next Page</button>
     </div>
-
 
   <script type="module" src="/src/main.ts"></script>
 </body>
