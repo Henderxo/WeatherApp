@@ -8,14 +8,35 @@
 
 <body class="mb-4">
   <div class="block has-text-centered m-4 ">
-    <button id="add-forecast-button" class="button is-primary mb-4" onclick="openModal()">Add forecast</button>
+    <button id="add-forecast-button" class="button is-primary mb-4">Add forecast</button>
   <h1 class="title is-1">Saved Weather Forecasts</h1>
-  
 
+  <!-- Error Modal -->
+  <div class="modal" id="error-modal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <div class="box">
+        <h2 class="title">Error</h2>
+        <p class="mb-4 is-primary" id="error-modal-message"></p>
+        <button class="button is-danger" id="error-modal-close">Close</button>
+      </div>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
+  </div>
+  
+    <!-- Search bar -->
+    <div class="field has-addons has-addons-centered mb-4">
+    <div class="control">
+      <input id="search-input" class="input" type="text" placeholder="Search forecasts by name">
+    </div>
+    <div class="control">
+      <button id="search-forecast-button" class="button is-link">Search</button>
+    </div>
+  </div>
 
   <!-- Modal -->
   <div class="modal" id="forecast-modal">
-    <div class="modal-background" onclick="closeModal()"></div>
+    <div class="modal-background"></div>
     <div class="modal-content">
       <div class="box">
         <h2 class="title">Add Forecast</h2>
@@ -40,18 +61,18 @@
             <input id="lon-input" class="input" type="text" placeholder="Enter longitude">
           </div>
         </div>
-        <button id="search-button" class="button is-link" onclick="searchForecast()">Search</button>
+        <button id="search-button" class="button is-link">Search</button>
       </div>
     </div>
-    <button class="modal-close is-large" aria-label="close" onclick="closeModal()"></button>
+    <button class="modal-close is-large" aria-label="close"></button>
   </div>
   <b><b>
   <div class="block has-text-centered" id="forecast-container"></div>
   <div>
 
     <div class="block has-text-centered m-4">
-      <button id="prev-page-button" class="button is-primary mr-2" onclick="prevPage()">Previous Page</button>
-      <button id="next-page-button" class="button is-primary" onclick="nextPage()">Next Page</button>
+      <button id="prev-page-button" class="button is-primary mr-2">Previous Page</button>
+      <button id="next-page-button" class="button is-primary">Next Page</button>
     </div>
 
 

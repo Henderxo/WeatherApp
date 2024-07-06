@@ -16,6 +16,18 @@ function closeModal() {
   modal.classList.remove('is-active');
 }
 
+function displayError(message: string){
+  const modal = document.getElementById('error-modal') as HTMLDivElement;
+  const error = document.getElementById('error-modal-message') as HTMLParagraphElement;
+  error.textContent = message;
+  modal.classList.add('is-active');
+}
+
+function closeError(){
+  const modal = document.getElementById('error-modal') as HTMLDivElement;
+  modal.classList.remove('is-active');
+}
+
 async function searchForecast() {
   closeModal();
   const cityInput = document.getElementById('city-input') as HTMLInputElement;
@@ -30,13 +42,17 @@ async function searchForecast() {
 
   const apiKey = '59ab558ba6686862be44b321255997d8'; // Replace with your actual API key
   let url = '';
+  let query = "";
 
   if (lat && lon) {
     url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+    query = "lat and lon";
   } else if (zip) {
     url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip}&appid=${apiKey}&units=metric`;
+    query = "zip";
   } else if (city) {
     url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+    query = "city";
   } else {
     console.error('Please enter either city name, ZIP code, or coordinates.');
     return;
@@ -45,11 +61,11 @@ async function searchForecast() {
   try {
     const response = await axios.get(url);
     const data = response.data;
-    
     saveForecast(data);
     closeModal();
     displayForecasts();
   } catch (error) {
+    displayError('Error fetching the weather data, the ' + query + " you entered must not exist");
     console.error('Error fetching the weather data:', error);
   }
 }
@@ -74,16 +90,15 @@ interface WeatherData {
 }
 
 function formatUnixTimestamp(timestamp: number): string {
-  const date = new Date(timestamp * 1000); // Convert to milliseconds
+  const date = new Date(timestamp * 1000);
   const hours = date.getHours();
-  const minutes = "0" + date.getMinutes(); // Add leading zero if necessary
+  const minutes = "0" + date.getMinutes();
   const formattedTime = hours + ':' + minutes.substr(-2);
   return formattedTime;
 }
 
 
-
-function displayForecasts() {
+function displayForecasts(forecasts?: WeatherData[]) {
   const forecastContainer = document.getElementById('forecast-container');
 
   if (!forecastContainer) {
@@ -91,13 +106,13 @@ function displayForecasts() {
     return;
   }
 
-  // Clear existing forecasts
+ 
   forecastContainer.innerHTML = '';
 
-  // Display forecasts for the current page
+  const dataToDisplay = forecasts ?? forecastsData;
   const startIndex = (currentPage - 1) * forecastsPerPage;
   const endIndex = startIndex + forecastsPerPage;
-  const currentForecasts = forecastsData.slice(startIndex, endIndex);
+  const currentForecasts = dataToDisplay.slice(startIndex, endIndex);
 
   currentForecasts.forEach(data => {
     const forecastDiv = document.createElement('div');
@@ -141,6 +156,7 @@ function displayForecasts() {
 
     forecastContainer.appendChild(forecastDiv);
   });
+  updatePageButtons();
 }
 
 function nextPage(){
@@ -150,6 +166,7 @@ function nextPage(){
     currentPage++;
     displayForecasts();
   } else {
+    displayError('No more forecasts to display.');
     console.log('No more forecasts to display.');
   }
 }
@@ -160,6 +177,31 @@ function prevPage(){
     currentPage--;
     displayForecasts();
   }
+  else{
+    displayError('Less then 10 forecasts to display');
+  }
+}
+
+function updatePageButtons() {
+  const totalPages = Math.ceil(forecastsData.length / forecastsPerPage);
+  const prevPageButton = document.getElementById('prev-page-button') as HTMLButtonElement;
+  const nextPageButton = document.getElementById('next-page-button') as HTMLButtonElement;
+
+  if (prevPageButton) {
+    if (currentPage === 1) {
+      prevPageButton.style.display = 'none';
+    } else {
+      prevPageButton.style.display = 'block';
+    }
+  }
+
+  if (nextPageButton) {
+    if (currentPage >= totalPages) {
+      nextPageButton.style.display = 'none';
+    } else {
+      nextPageButton.style.display = 'block';
+    }
+  }
 }
 
 function removeForecast(forecastData: WeatherData) {
@@ -169,7 +211,12 @@ function removeForecast(forecastData: WeatherData) {
 }
 
 function saveForecastsToLocalStorage() {
-  localStorage.setItem('forecasts', JSON.stringify(forecastsData));
+  try{
+    localStorage.setItem('forecasts', JSON.stringify(forecastsData));
+  }
+  catch{
+    displayError("Forecasts coudn't save localy");
+  }
 }
 
 function saveForecast(data: WeatherData) {
@@ -189,12 +236,23 @@ function loadSavedForecasts() {
   displayForecasts();
 }
 
-// Load saved forecasts on page load
-document.addEventListener('DOMContentLoaded', loadSavedForecasts);
+function searchForecastByName() {
+  const searchInput = document.getElementById('search-input') as HTMLInputElement;
+  const query = searchInput.value.trim().toLowerCase();
+  const filteredForecasts = forecastsData.filter(forecast =>
+    forecast.name.toLowerCase().includes(query)
+  );
+  displayForecasts(filteredForecasts);
+  if (filteredForecasts.length == 0){
+    displayError("No forecasts that matched where found");
+  }
+}
 
-// Expose functions to the global scope so they can be called from HTML
-(window as any).openModal = openModal;
-(window as any).closeModal = closeModal;
-(window as any).searchForecast = searchForecast;
-(window as any).prevPage = prevPage;
-(window as any).nextPage = nextPage;
+
+document.addEventListener('DOMContentLoaded', () => loadSavedForecasts());
+document.getElementById('add-forecast-button')?.addEventListener('click', () => openModal());
+document.getElementById('search-button')?.addEventListener('click', () => searchForecast());
+document.getElementById('prev-page-button')?.addEventListener('click', () => prevPage());
+document.getElementById('next-page-button')?.addEventListener('click', () => nextPage());
+document.getElementById('error-modal-close')?.addEventListener('click', () => closeError());
+document.getElementById('search-forecast-button')?.addEventListener('click', () => searchForecastByName());
