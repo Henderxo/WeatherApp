@@ -1,4 +1,13 @@
 import './style.css'
+import rain from './Assets/rain.svg'
+import clear from './Assets/day_clear.svg'
+import clouds from './Assets/cloudy.svg'
+import thunder from './Assets/thunder.svg'
+import snow from './Assets/snow.svg'
+import mist from './Assets/mist.svg'
+import fog from './Assets/fog.svg'
+import wind from './Assets/wind.svg'
+import tornado from './Assets/tornado.svg'
 import axios from 'axios';
 
 const forecastsPerPage = 10;
@@ -85,6 +94,7 @@ interface WeatherData {
     sunset: number;
   }
   weather: {
+    main: string;
     description: string;
   }[];
 }
@@ -106,7 +116,6 @@ function displayForecasts(forecasts?: WeatherData[]) {
     return;
   }
 
- 
   forecastContainer.innerHTML = '';
 
   const dataToDisplay = forecasts ?? forecastsData;
@@ -140,6 +149,53 @@ function displayForecasts(forecasts?: WeatherData[]) {
     const weatherDescriptionParagraph = document.createElement('p');
     weatherDescriptionParagraph.textContent = `Weather: ${data.weather[0].description}`;
 
+    let icon = "";
+    switch(data.weather[0].main){
+      case "Rain":
+        icon = rain;
+        break;
+      case "Clouds":
+        icon = clouds;
+        break;
+      case "Clear":
+        icon = clear;
+        break;
+      case "Thunderstorm":
+        icon = thunder;
+        break;
+      case "Snow":
+        icon = snow;
+        break;
+      case "Mist":
+        icon = mist;
+        break;
+      case "Fog":
+        icon = fog;
+        break;
+      case "Tornado":
+        icon = tornado;
+        break;
+      case "Drizzle":
+        icon = rain;
+        break;
+      case "Haze":
+        icon = fog;
+        break;
+      case "Squall":
+        icon = wind;
+        break;
+      default:
+    }
+    
+    const iconParagraph = document.createElement('p');
+    const iconImg = document.createElement('img');
+    iconImg.src = icon;
+    iconImg.alt = clear;
+    iconImg.style.width = '40px';
+    iconImg.style.height = '40px';
+    iconImg.style.padding = ''
+    iconParagraph.appendChild(iconImg);
+
     const removeButton = document.createElement('button');
     removeButton.classList.add('button', 'is-danger');
     removeButton.textContent = 'Remove';
@@ -152,8 +208,8 @@ function displayForecasts(forecasts?: WeatherData[]) {
     forecastDiv.appendChild(pressureParagraph);
     forecastDiv.appendChild(sunriseSunsetParagraph);
     forecastDiv.appendChild(weatherDescriptionParagraph);
+    forecastDiv.appendChild(iconParagraph);
     forecastDiv.appendChild(removeButton);
-
     forecastContainer.appendChild(forecastDiv);
   });
   updatePageButtons();

@@ -2,14 +2,33 @@
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Weather</title>
+  <title>WeatherApp</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.1/css/bulma.min.css">
 </head>
 
 <body class="mb-4">
   <div class="block has-text-centered m-4 ">
+    <h1 class="title is-1">Wather App</h1>
     <button id="add-forecast-button" class="button is-primary mb-4">Add forecast</button>
-  <h1 class="title is-1">Saved Weather Forecasts</h1>
+
+
+    <div class="columns">
+      <div class="column  is-half is-offset-one-quarter">
+        <h1 class="title">Saved Weather Forecasts</h1>
+      </div>
+      <div class="column ">
+        <div class="field has-addons">
+          <div class="control">
+            <input id="search-input" class="input" type="text" placeholder="Search forecasts by name">
+          </div>
+          <div class="control">
+            <button id="search-forecast-button" class="button is-link">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 
   <!-- Error Modal -->
   <div class="modal" id="error-modal">
@@ -22,16 +41,6 @@
       </div>
     </div>
     <button class="modal-close is-large" aria-label="close"></button>
-  </div>
-  
-    <!-- Search bar -->
-    <div class="field has-addons has-addons-centered mb-4">
-    <div class="control">
-      <input id="search-input" class="input" type="text" placeholder="Search forecasts by name">
-    </div>
-    <div class="control">
-      <button id="search-forecast-button" class="button is-link">Search</button>
-    </div>
   </div>
 
   <!-- Modal -->
