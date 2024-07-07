@@ -15,6 +15,7 @@ let currentPage = 1;
 let forecastsData: WeatherData[] = [];
 let currentModel: string;
 let currentForecastsData: WeatherData[] = [];
+let searchQuery: string = '';
 
 
 function displayError(message: string){
@@ -92,7 +93,7 @@ async function searchForecast() {
       return;
     }
     saveForecast(data);
-    displayForecasts();
+    updateForecastLastQuery();
     displaySuccess("Forecast was successfully added");
   } catch (error) {
     displayError('Error fetching the weather data, the ' + query + " you entered must not exist");
@@ -323,8 +324,21 @@ function searchForecastByName() {
   currentPage = 1;
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
   const query = searchInput.value.trim().toLowerCase();
+  searchQuery = query;
   const filteredForecasts = forecastsData.filter(forecast =>
     forecast.name.toLowerCase().includes(query)
+  );
+  currentForecastsData = filteredForecasts;
+  displayForecasts(filteredForecasts);
+  updatePageButtons(filteredForecasts);
+  if (filteredForecasts.length == 0){
+    displayError("No forecasts that matched where found");
+  }
+}
+
+function updateForecastLastQuery() {
+  const filteredForecasts = forecastsData.filter(forecast =>
+    forecast.name.toLowerCase().includes(searchQuery)
   );
   currentForecastsData = filteredForecasts;
   displayForecasts(filteredForecasts);
