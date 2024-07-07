@@ -17,7 +17,7 @@ It displays detailed weather information including temperature, humidity, wind s
 - **Frontend**: HTML, CSS (Bulma.io for styling), TypeScript
 - **Backend**: OpenWeatherMap API for weather data retrieval
 - **Build Tool**: Vite.js
-- **Additional Libraries**: Axios for HTTP requests
+- **Additional Libraries**: Axios for HTTP requests and http-server
 
 ## WeatherApp - Building and Starting Instructions(Locally)
 
