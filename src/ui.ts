@@ -76,21 +76,20 @@ function displayForecasts(forecasts?: WeatherData[]) {
         title.textContent = "Lon: " + data.coord.lon + ", Lat: " + data.coord.lat;
       }
       
-  
       const tempParagraph = document.createElement('p');
       tempParagraph.textContent = `Temperature: ${data.main.temp} °C`;
   
       const humidityParagraph = document.createElement('p');
-      humidityParagraph.textContent = `Humidity: ${data.main.humidity}`;
+      humidityParagraph.textContent = `Humidity: ${data.main.humidity} %`;
   
       const windSpeedParagraph = document.createElement('p');
-      windSpeedParagraph.textContent = `Wind speed: ${data.wind.speed}`;
+      windSpeedParagraph.textContent = `Wind speed: ${data.wind.speed} m/s`;
   
       const pressureParagraph = document.createElement('p');
-      pressureParagraph.textContent = `Pressure: ${data.main.pressure}`;
+      pressureParagraph.textContent = `Pressure: ${data.main.pressure} hPa`;
   
       const sunriseSunsetParagraph = document.createElement('p');
-      sunriseSunsetParagraph.textContent = `Time of sunrise: ${formatUnixTimestamp(data.sys.sunrise)}; Time of sunset: ${formatUnixTimestamp(data.sys.sunset)}`;
+      sunriseSunsetParagraph.textContent = `Time of sunrise: ${formatUnixTimestamp(data.sys.sunrise)} h; Time of sunset: ${formatUnixTimestamp(data.sys.sunset)} h`;
   
       const weatherDescriptionParagraph = document.createElement('p');
       weatherDescriptionParagraph.textContent = `Weather: ${data.weather[0].description}`;
