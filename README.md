@@ -30,18 +30,18 @@ Step-by-Step Guide:
 1. **Clone the Repository:**
      Open your terminal.
      Clone the WeatherApp repository from GitHub:
-     *-git clone https://github.com/your-username/WeatherApp.git*
+     *-git clone https://github.com/Henderxo/WeatherApp.git*.
 2. **Navigate to the Project Directory:**
-     *-cd WeatherApp*
+     *-cd WeatherApp*.
 3. **Install Dependencies:**
      Install the necessary dependencies using npm:
-     *-npm install*
+     *-npm install*.
 4. **Configuration:**
      Open the project directory in your preferred code editor.
      In **api.ts** files change the API key, to your own. (To get the API key use this website: https://openweathermap.org/).
 5. **Run the Application:**
      Start the WeatherApp locally:
-     *-npm run dev*
+     *-npm run dev*.
      This command will build and run the application in development mode.
 6. **Access the Application:**
      Open your web browser.
