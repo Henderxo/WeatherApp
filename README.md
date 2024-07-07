@@ -19,7 +19,7 @@ It displays detailed weather information including temperature, humidity, wind s
 - **Build Tool**: Vite.js
 - **Additional Libraries**: Axios for HTTP requests
 
-## WeatherApp - Building and Starting Instructions
+## WeatherApp - Building and Starting Instructions(Locally)
 
 Before running the WeatherApp locally, ensure you have the following installed on your machine:
 
@@ -47,3 +47,18 @@ Step-by-Step Guide:
      Open your web browser.
      Navigate to http://localhost:xxxx (or the port specified in your project) to view the WeatherApp.
    
+## WeatherApp - Building and Starting Instructions(http-server)
+
+     Follow the first 4 steps in the  **Building and Starting Instructions(Locally)** tab.
+
+1. **Build the Application:**
+     Build the WeatherApp:
+     *-npm run build*.
+     This command will generate a production-ready build of your WeatherApp in the ./dist directory (default).
+2. **Serve the Application with http-server**
+     After building the application, you can use http-server to serve the built files.
+   *-npm run serve*.
+3. **Access the WeatherApp:**
+     Once http-server starts, it will provide you with URLs where your WeatherApp is accessible locally (e.g., http://localhost:8080).
+4. **Verify Access:**
+     Open a web browser and navigate to the URL provided by http-server to verify that your WeatherApp is running correctly (If its not, try using incognito mode).
