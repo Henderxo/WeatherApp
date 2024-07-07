@@ -75,6 +75,10 @@ function displayForecasts(forecasts?: WeatherData[]) {
       else{
         title.textContent = "Lon: " + data.coord.lon + ", Lat: " + data.coord.lat;
       }
+
+      const countryParagraph = document.createElement('p');
+      countryParagraph.textContent = `Country: ${data.sys.country}`;
+
       
       const tempParagraph = document.createElement('p');
       tempParagraph.textContent = `Temperature: ${data.main.temp} °C`;
@@ -147,6 +151,7 @@ function displayForecasts(forecasts?: WeatherData[]) {
       removeButton.addEventListener('click', () => removeForecast(data));
   
       forecastDiv.appendChild(title);
+      forecastDiv.appendChild(countryParagraph);
       forecastDiv.appendChild(tempParagraph);
       forecastDiv.appendChild(humidityParagraph);
       forecastDiv.appendChild(windSpeedParagraph);
