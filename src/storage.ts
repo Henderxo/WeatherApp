@@ -10,7 +10,6 @@ function saveForecast(data: WeatherData) {
     catch{
         displayError("Forecasts coudn't save localy");
     }
-    
   }
 
 function saveForecastsToLocalStorage() {
@@ -23,18 +22,28 @@ function saveForecastsToLocalStorage() {
   }
 
   function loadSavedForecasts() {
+    try{
     let forecasts = JSON.parse(localStorage.getItem('forecasts') || '[]');
     setForecastsData(forecasts);
     setCurrentForecastsData(forecasts);
     displayForecasts();
+    }
+    catch{
+        displayError("Loading data failed");
+    }
   }
 
 function removeForecast(forecastData: WeatherData) {
+    try{
     setForecastsData(forecastsData.filter(data => data.name !== forecastData.name));
     setCurrentForecastsData(currentForecastsData.filter(data => data.name !== forecastData.name));
     saveForecastsToLocalStorage();
     displayForecasts();
     displaySuccess("Forecast was successfully removed");
+    }
+    catch{
+        displayError("Forecasts coudn't be removed");
+    }
   }
 
   function updateForecastLastQuery() {
