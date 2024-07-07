@@ -49,7 +49,7 @@ Step-by-Step Guide:
    
 ## WeatherApp - Building and Starting Instructions(http-server)
 
-     Follow the first 4 steps in the  **Building and Starting Instructions(Locally)** tab.
+Follow the first 4 steps in the  **Building and Starting Instructions(Locally)** tab.
 
 1. **Build the Application:**
      Build the WeatherApp:
