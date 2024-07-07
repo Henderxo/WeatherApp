@@ -3,7 +3,7 @@ import { saveForecast, updateForecastLastQuery } from './storage';
 import { displaySuccess, displayError, close } from './ui';
 import { currentModel, forecastsData } from './states';
 
-const apiKey = '59ab558ba6686862be44b321255997d8'; // Replace with your actual API key
+const apiKey = ''; // Replace with your actual API key
 
 async function searchForecast(used: string) {
   close(currentModel);
