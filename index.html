@@ -9,27 +9,23 @@
 <body class="mb-4">
   <div class="block has-text-centered m-4 ">
   <div class="columns">
-    <div class="column  is-half is-offset-one-quarter">
-      <h1 class="title is-1">Wather App</h1>
+    <div class="column is-half is-offset-one-quarter">
+      <h1 class="title is-1">Weather App</h1>
     </div>
-    <div class="column">
-      <button id="add-forecast-button" class="button is-primary">Add forecast</button>
+    <div class="column column is-3">
+      <button id="add-forecast-button" class="button is-primary is-fullwidth">Add forecast</button>
     </div>
   </div>
 
 
     <div class="columns">
-      <div class="column  is-half is-offset-one-quarter">
+      <div class="column is-half is-offset-one-quarter">
         <h1 class="title">Saved Weather Forecasts</h1>
       </div>
-      <div class="column ">
+      <div class="column is-3">
         <div class="field has-addons">
-          <div class="control">
             <input id="search-input" class="input" type="text" placeholder="Search forecasts by name">
-          </div>
-          <div class="control">
             <button id="search-forecast-button" class="button is-primary">Search</button>
-          </div>
         </div>
       </div>
     </div>
@@ -132,9 +128,16 @@
   <div class="block has-text-centered" id="forecast-container"></div>
   <div>
 
-    <div class="block has-text-centered m-4">
-      <button id="prev-page-button" class="button is-primary mr-2">Previous Page</button>
-      <button id="next-page-button" class="button is-primary">Next Page</button>
+    <div class="columns">
+      <div class="column is-half is-offset-one-quarter">
+        <div class="buttons is-centered">
+          <button id="prev-page-button" class="button is-primary mr-2">Previous Page</button>
+          <button id="next-page-button" class="button is-primary">Next Page</button>
+        </div>
+      </div>
+      <div class="column">
+        <p id="pages"><p>
+      </div>
     </div>
 
   <script type="module" src="/src/main.ts"></script>
